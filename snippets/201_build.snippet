@@ -1,0 +1,46 @@
+<CodeSnippets
+    xmlns="http://schemas.microsoft.com/VisualStudio/2008/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>
+                Products Connection
+            </Title>
+            <Shortcut>201</Shortcut>
+        </Header>
+        <Snippet>
+            <Code Language="CSharp">
+                <![CDATA[public IEnumerable<Product> Get()
+        {
+            const string sql = "select TOP 100 * from dbo.Products";
+            var connection = Encoding.UTF8.GetString(Convert.FromBase64String("U2VydmVyPVdXRUdORVItU1VSRkFDRVxTUUxFWFBSRVNTLDE0MzM7RGF0YWJhc2U9U2FsZXNEQjtVc2VyIElkPXNhO1Bhc3N3b3JkPVBhJCR3MHJkIQ=="));
+            var products = new List<Product>();
+
+            using (var conn = new SqlConnection(connection))
+            {
+                conn.Open();
+
+                using (var myCommand = new SqlCommand(sql, conn))
+                {
+                    using (var myReader = myCommand.ExecuteReader())
+                    {
+                        while (myReader.Read())
+                        {
+                            var product = new Product
+                            {
+                                ProductId = Convert.ToInt32(myReader["ProductId"]),
+                                Name = Convert.ToString(myReader["Name"]),
+                                Price = Convert.ToDecimal(myReader["Price"])
+                            };
+
+                            products.Add(product);
+                        }
+                    }
+                }
+            }
+
+            return products;
+        }]]>
+            </Code>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>
